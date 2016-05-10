@@ -1,0 +1,84 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title>Ajax基础</title>
+<style type="text/css">
+body {
+	font-family: 宋体;
+	font-size: 12px;
+	}
+* {
+	margin: 0px;
+	padding: 0px;
+	border: 0px;
+	}
+form {
+	width: 280px;
+	height: 181px;
+	background-image: url(images/13201.jpg);
+	background-repeat: no-repeat;
+	padding-top: 40px;
+	padding-left: 20px;
+	}
+input {
+	font-family: 宋体;
+	color: #666666;
+	background: transparent;
+	border-bottom: 1px dashed #007EFF;
+	border-left: none;
+	border-right: none;
+	border-top: none;
+	}
+p {
+	padding: 10px 5px 5px 15px;
+	background-image: url(images/13202.gif);
+	background-repeat: no-repeat;
+	background-position: left center;
+	}
+</style>
+</head>
+<script language="javascript">
+  var xmlHttp;
+  function createXMLHttpRequest() {
+	  if(window.ActiveXObject){
+		  xmHttp = new ActiveXObject("Microsoft.XMLHTTP");
+		  }
+	  else if(window.XMLHttpRequest) {
+		  xmlHttp = new XMLHttpRequest();
+		  }
+	  }
+  //创建XMLHttpRequest对象
+  createXMLHttpRequest();
+  
+  function callServer() {
+	  //获取表单中的数据
+	  var city = document.getElementById("city").value;
+	  var state = document.getElementById("state").value;
+	  //如果没有填写则返回
+	  if((city == null)||(city == "")) return;
+	  if((state == null)||(state == "")) return;
+	  //链接服务器，自动获得代号。本实例没有链接服务器，此处只是示例
+	  var url = "getZipCode.php?city=" + escape(city) + "&state=" + escape(state);
+	  //打开链接
+	  xmlHttp.open("GET",url,true);
+	  //告诉服务器在运行完成后做什么，此处触发updatePage函数
+	  xmlHttp.onreadystatechange = updatePage;
+	  //发送请求
+	  xmlHttp.send(null);
+	  }
+  //处理服务器响应
+  function updatePage() {
+	  if(xmlHttp.readyState == 4) {
+		  var response = xmlHttp.responseText;
+		  document.getElementById("zipCode").value = reponse;
+		  }
+	  }
+</script>
+<body>
+<form>
+ <p>城市：<input type="text" name="city" id="city" size="25" onChange"callServer();"></p>
+ <p>国家：<input type="text" name="state" id="state" size="25" onChange"callServer();"></p>
+ <p>代号：<input type="text" name="zipCode" id="zipCode" size="5"></p>
+</form>
+</body>
+</html>
